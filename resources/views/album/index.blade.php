@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-md-6"> 
     <select>
-      <option value="">Choose an Album</option>
+      <option value="">Filter by Band</option>
     </select>
    </div>
 </div>
