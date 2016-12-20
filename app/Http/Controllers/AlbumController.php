@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Album;
+use App\Band;
 use Illuminate\Http\Request;
 
 class AlbumController extends Controller
@@ -15,8 +16,12 @@ class AlbumController extends Controller
     public function index()
     {
         $albums = Album::orderBy('name', 'asc')->get();
+        $bands = Band::all();
 
-        return view('album.index', ['albums' => $albums]);
+        return view('album.index', [
+            'albums' => $albums,
+            'bands'  => $bands
+        ]);
     }
 
     /**
@@ -26,7 +31,9 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        return view('album.create');
+        $bands = Band::all();
+
+        return view('album.create', ['bands' => $bands]);
     }
 
     /**
@@ -37,7 +44,24 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        dd('album created');
+        $this->validate($request, [
+            'name'         => 'required|max:255',
+            'select_band'  => 'required'
+        ]);
+
+        $album = new Album;
+        $album->band_id          = $request->select_band;
+        $album->name             = $request->name;
+        $album->recorded_date    = $request->recorded_date;
+        $album->release_date     = $request->release_date;
+        $album->number_of_tracks = $request->number_of_tracks;
+        $album->label            = $request->label;
+        $album->producer         = $request->producer;
+        $album->genre            = $request->genre;
+
+        $album->save();
+
+        return redirect('/albums')->with('success', 'Added Album Successfully!');
     }
 
     /**
@@ -48,7 +72,9 @@ class AlbumController extends Controller
      */
     public function show($id)
     {
-        //
+        $album = Album::findOrFail($id);
+
+        return view('album.detail', ['album' => $album]);
     }
 
     /**
@@ -59,9 +85,13 @@ class AlbumController extends Controller
      */
     public function edit($id)
     {
-        $album = Album::find($id);
+        $album = Album::findOrFail($id);
+        $bands = Band::all();
 
-        return view('album.edit', ['album' => $album]);
+        return view('album.edit', [
+            'album' => $album, 
+            'bands' => $bands
+        ]);
     }
 
     /**
@@ -73,7 +103,25 @@ class AlbumController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd('album updated');
+        $this->validate($request, [
+            'name'          => 'required|max:255',
+            'select_band'   => 'required'
+        ]);
+
+        $album = Album::find($id);
+
+        $album->band_id          = $request->select_band;
+        $album->name             = $request->name;
+        $album->recorded_date    = $request->recorded_date;
+        $album->release_date     = $request->release_date;
+        $album->number_of_tracks = $request->number_of_tracks;
+        $album->label            = $request->label;
+        $album->producer         = $request->producer;
+        $album->genre            = $request->genre;
+
+        $album->save();
+
+        return redirect('/albums')->with('success', 'Updated Album Successfully!');
     }
 
     /**
@@ -84,6 +132,10 @@ class AlbumController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $album = Album::find($id);
+
+        $album->delete(); 
+
+        return redirect('/albums')->with('delete', 'Album has been deleted!');
     }
 }

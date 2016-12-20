@@ -14,6 +14,7 @@
 Route::get('/', 'BandController@index');
 
 // bands
+
 Route::get('band/create', [
     'uses' => 'BandController@create',
     'as'   => 'create-band'
@@ -34,10 +35,18 @@ Route::post('band/{id}/update', [
     'as'   => 'update-band'
 ]);
 
-Route::delete('band/{id}/delete', [
+// get works but delete doesn not??
+Route::get('band/{id}/delete', [
     'uses' => 'BandController@destroy',
     'as'   => 'delete-band'    
 ]);
+
+Route::get('band/{id}', [
+   'uses'  => 'BandController@show',
+   'as'    => 'show-band'
+]);
+
+
 
 // albums
 Route::get('albums', 'AlbumController@index');
@@ -64,7 +73,12 @@ Route::post('album/{id}/update', [
 ]);
 
 
-Route::delete('album/{id}/delete', [
+Route::get('album/{id}/delete', [
    'uses'  => 'AlbumController@destroy',
    'as'    => 'delete-album'
+]);
+
+Route::get('album/{id}', [
+    'uses'  => 'AlbumController@show',
+    'as'    => 'show-album'
 ]);

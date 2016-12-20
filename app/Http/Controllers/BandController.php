@@ -28,6 +28,7 @@ class BandController extends Controller
      */
     public function create()
     {
+
         return view('band.create');
     }
 
@@ -39,7 +40,13 @@ class BandController extends Controller
      */
     public function store(Request $request)
     {
-        dd('band created');
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+
+        Band::create($request->all());
+
+        return redirect('/')->with('success', 'Successfully created band!');
     }
 
     /**
@@ -50,7 +57,9 @@ class BandController extends Controller
      */
     public function show($id)
     {
-        //
+        $band = Band::findOrFail($id);
+
+        return view('band.detail', ['band' => $band]);
     }
 
     /**
@@ -75,7 +84,13 @@ class BandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd('band updated');
+        $this->validate($request, [
+            'name'  => 'required'
+        ]);
+
+        Band::find($id)->update($request->all());
+
+        return redirect('/')->with('success', 'Succuessfully updated record!');
     }
 
     /**
@@ -86,6 +101,11 @@ class BandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $band = Band::find($id);
+
+        $band->delete();
+        // no need to do anything else, already deletes on cascade
+
+        return redirect('/albums')->with('delete', 'Band has been deleted!');
     }
 }

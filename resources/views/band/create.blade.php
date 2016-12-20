@@ -2,7 +2,9 @@
 
 @section('content')
   
-    <h2>Create Album</h2>
+    <h2>Create Band</h2>
+
+     @include('includes.flash.errors')
 
      <form action="{{ route('store-band') }}" method="post">
 
@@ -27,7 +29,7 @@
         <div class="form-group">
            <label for="still_active">Still Active?</label>
            <select name="still_active" class="form-control">
-             <option value="">Choose Yes or No</option>
+             <option selected="true" disabled="disabled">Choose Yes or No</option>
              <option value="1">Yes</option>
              <option value="0">No</option>
            </select>

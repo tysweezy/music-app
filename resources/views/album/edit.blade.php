@@ -4,7 +4,7 @@
   
     <h2>Edit {{ $album->name }} Album</h2>
 
-     <form action="{{ route('edit-album', $album->id) }}">
+     <form action="{{ route('update-album', $album->id) }}" method="post">
 
         {!! csrf_field() !!} 
 
@@ -15,10 +15,15 @@
 
 
         <!-- where the select dropdown of bands will go -->
+        <!-- todo: might use laravel collections to exclude selected option -->
         <div class="form-group">
-           <label for="band">Choose Band</label>
-           <select name="band" class="form-control">
-             <option value="">Choose a band</option>
+           <label for="select_band">Choose Band</label>
+           <select name="select_band" class="form-control">
+             <option selected="true" value="{{ $album->band_id }}">{{ $album->band->name }}</option>
+
+             @foreach($bands as $band)
+                <option value="{{ $band->id }}">{{ $band->name }}</option>
+             @endforeach
            </select>
         </div>
 
