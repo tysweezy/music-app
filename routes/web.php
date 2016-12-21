@@ -35,7 +35,7 @@ Route::post('band/{id}/update', [
     'as'   => 'update-band'
 ]);
 
-// get works but delete doesn not??
+
 Route::get('band/{id}/delete', [
     'uses' => 'BandController@destroy',
     'as'   => 'delete-band'    
