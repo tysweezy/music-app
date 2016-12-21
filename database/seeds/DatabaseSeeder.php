@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
      DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
 
-      factory(App\Band::class, 50)->create();
-      factory(App\Album::class, 150)->create();
+      factory(App\Band::class, 10)->create();
+      factory(App\Album::class, 50)->create();
 
     }
 }

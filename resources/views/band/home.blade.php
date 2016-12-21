@@ -16,15 +16,45 @@
 
 @include('includes.flash.delete')
 
+
+@if (count($bands) == 0) 
+  <div class="alert alert-info">There are no bands on this page. :(</div>
+@else
+
+
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Band List</h3>
   </div>
   <div class="panel-body">
+
+
      
  <table class="table">
    <tr>
-     <th>Band Name</th>
+     <th>
+       @if($sort == 'name' && $order == 'asc') 
+        <a href="?{{ http_build_query([
+            'sort'  => 'name',
+            'order' => 'desc'
+          ]) 
+        }}">
+          Band Name
+        </a>
+
+       @else
+
+        <a href="?{{ http_build_query([
+            'sort'  => 'name',
+            'order' => 'asc'
+          ]) 
+        }}">
+          Band Name
+        </a>
+          
+
+       @endif
+    </th>
      <th>Edit</th>
      <th>Delete</th>
    </tr>
@@ -40,5 +70,7 @@
   </table>
   </div>
 </div>
+
+@endif
 
 @endsection

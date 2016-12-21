@@ -25,7 +25,7 @@ $factory->define(App\Band::class, function (Faker\Generator $faker) {
 $factory->define(App\Album::class, function (Faker\Generator $faker) {
 
     return [
-        'band_id'             => rand(1,50),
+        'band_id'             => rand(1,10),
         'name'                => $faker->word,
         'recorded_date'       => $faker->date,
         'release_date'        => $faker->date,

@@ -19,6 +19,12 @@ class Album extends Model
                            'genre'
                            ];
 
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('band_id', 'LIKE', "%$search%");
+    }                       
+
     /**
      * Album belongs to a band.
      *

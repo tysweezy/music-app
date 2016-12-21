@@ -11,16 +11,38 @@ class AlbumController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @todo sorting functionality is 
+     * duplicated from BandController
+     * will need to refactor.
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $albums = Album::orderBy('name', 'asc')->get();
+
+        $sort = $request->get('sort');
+        $order = $request->get('order');
+  
         $bands = Band::all();
+
+        $filter = $request->get('filter_band');
+
+
+        if ($sort && $order) {
+           $albums = Album::orderBy($sort, $order)->get();
+        } else {
+
+          $albums = Album::orderBy('name', 'desc')->get();
+        }
+
+        if ($filter) {
+          $albums = Album::search($filter)->get();
+        }
 
         return view('album.index', [
             'albums' => $albums,
-            'bands'  => $bands
+            'bands'  => $bands,
+            'sort'   => $sort,
+            'order'  => $order
         ]);
     }
 

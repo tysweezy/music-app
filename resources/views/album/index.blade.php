@@ -5,18 +5,23 @@
 @include('includes.flash.success')
 @include('includes.flash.delete')
 
+
 <div class="row">
   <div class="col-md-6"> 
-    <select name="filter_band">
-      <option selected="true" disabled="disabled">Filter by Band</option>
-       <!-- Band::where('name', $name)->first(); -->
-       @foreach($bands as $band)
-         
-          <option value="{{ $band->name }}">{{ $band->name }}</option>
-   
-       @endforeach
-    </select>
+    <form method="get">
+        <select name="filter_band" onchange="this.form.submit()">
+            <option selected="true" disabled="disabled">Filter by Band</option>
+            <!-- Band::where('name', $name)->first(); -->
+            @foreach($bands as $band)
+                
+                <option value="{{ $band->id }}">{{ $band->name }}</option>
+        
+            @endforeach
+        </select>
+    </form>
    </div>
+
+
 
 
    <div class="col-md-6">
@@ -26,6 +31,10 @@
 
 <br>
 
+
+@if (count($albums) == 0)
+  <div class="alert alert-info">There are no Albums to be shown. :(</div>
+@else
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Album List</h3>
@@ -34,7 +43,19 @@
      
  <table class="table">
    <tr>
-     <th>Album Name</th>
+     <th>
+
+      <a href="{{ url('albums?') . http_build_query([
+          'sort'   => 'name',
+          'order'  => $order == 'asc' ? 'desc' : 'asc'     
+        ]) }}">
+        Album Name
+      </a>
+
+
+       
+
+     </th>
      <th>Edit</th>
      <th>Delete</th>
    </tr>
@@ -51,5 +72,7 @@
   </table>
   </div>
 </div>
+
+@endif
 
 @endsection

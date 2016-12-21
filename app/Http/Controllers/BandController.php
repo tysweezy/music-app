@@ -12,13 +12,23 @@ class BandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // return all results for now.
-         // sort alphabetically
-        $bands = Band::orderBy('name', 'asc')->get();
+        $sort = $request->get('sort');
+        $order = $request->get('order');
 
-        return view('band.home', ['bands' => $bands]);
+        if ($sort && $order) {
+           $bands = Band::orderBy($sort, $order)->get();
+        } else {
+
+          $bands = Band::orderBy('name', 'desc')->get();
+        }
+
+        return view('band.home', [
+             'bands' => $bands, 
+             'sort'  => $sort,
+             'order' => $order
+         ]);
     }
 
     /**
@@ -106,6 +116,6 @@ class BandController extends Controller
         $band->delete();
         // no need to do anything else, already deletes on cascade
 
-        return redirect('/albums')->with('delete', 'Band has been deleted!');
+        return redirect('/')->with('delete', 'Band has been deleted!');
     }
 }
